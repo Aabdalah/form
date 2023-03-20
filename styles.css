@@ -101,7 +101,7 @@ button:active{
         opacity:0;
     }
 }
-@media only screen and (width: 400px) {
+@media only screen and (max-width: 400px) {
     textarea{
         margin:0;
         margin-left:45px;
@@ -109,6 +109,7 @@ button:active{
     }
     #forum{
       width:280px;
+        margin:0;
     }
     button{
         width:60px;
