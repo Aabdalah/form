@@ -13,8 +13,14 @@ questionsFor2.push("<div class='question hidden' id='3'><h1>Question three ?</h1
 questionsFor2.push("<div class='question hidden' id='3'><h1>Question three ?</h1><div class='options'><input type='text' class='generated 1' value='option up'><input type='text' class='generated 2' value='option down'><input type='text' class='generated 3' value='option right'></div></div>");
 questionsFor2.push("");
 questionsFor2.push("<div class='question hidden' id='3'><h1>Question three ?</h1><div class='options'><input type='text' class='generated 1' value='option black'><input type='text' class='generated 2' value='option white'><input type='text' class='generated 3' value='option blue'><input type='text' class='generated 4' value='option red'></div></div>");
-
-
+//
+let questionsFor3 = [];
+questionsFor3.push("<div class='question hidden' id='4'><h1>Question four ?</h1><div class='options'><input type='text' class='generated 1' value='option tall'><input type='text' class='generated 2' value='option small'><input type='text' class='generated 3' value='option medium'><input type='text' class='generated 4' value='option X'></div></div>");
+questionsFor3.push("<div class='question hidden' id='4'><h1>Question four ?</h1><div class='options'><input type='text' class='generated 1' value='option once'><input type='text' class='generated 2' value='option twice'><input type='text' class='generated 3' value='option three'></div></div>");
+questionsFor3.push("");
+questionsFor3.push("<div class='question hidden' id='4'><h1>Question four ?</h1><div class='options'><input type='text' class='generated 1' value='option light'><input type='text' class='generated 2' value='option dark'><input type='text' class='generated 3' value='option not dark'><input type='text' class='generated 4' value='option not light'></div></div>");
+//
+let Questions = [questionsFor1,questionsFor2,questionsFor3];
 $(document).ready(function(){
     questionNumbers = $(".question").length;
     $("input").click(function(){
@@ -26,9 +32,7 @@ $(document).ready(function(){
 })
 $(document).ready(function(){//wait till the page is loaded
     $("#main").prepend(mainQ);
-    
     $("#main").on('click','.generated',function(){//git the button that the user clicks will not work if it a special button
-        if(result.length >2){result.pop()};
         $(this).css("background-color","green");//change the background color of the clicked option
         let add = [];//make another array that will go into the result array 
         add.push($(this).val());//add the value of the clicked button to the add array
@@ -39,23 +43,32 @@ $(document).ready(function(){//wait till the page is loaded
         //displaying the next question
         let questionNumber = $(this).parent().parent().attr("id");//get the number of the question the user answered
         let placeToAppend = $(this).parent().parent();//get the place you will append the new question
-        console.log(questionNumbers)
-        if(questionNumbers==1&&$(this).parent().parent().attr("id")==questionNumbers){
-            $(questionsFor1[$(this).attr("class").match(/\d+/g)[0]-1]).insertAfter(placeToAppend);
-        }else if(questionNumbers==2&&$(this).parent().parent().attr("id")==questionNumbers-1){
-            $(placeToAppend.next()).replaceWith(questionsFor1[$(this).attr("class").match(/\d+/g)[0]-1]);
+        let inputIndex = $(this).attr("class").match(/\d+/g)[0]-1;
+        //
+        if(questionNumbers == questionNumber && Questions[questionNumber-1]){
+            $(Questions[questionNumber-1][inputIndex]).insertAfter(placeToAppend);
+        }else if(questionNumbers != questionNumber && !placeToAppend.next().is($(".textarea")) && Questions[questionNumber-1]){
+            $(placeToAppend.next()).replaceWith(Questions[questionNumber-1][inputIndex]);
         }
         questionNumbers = $(".question").length;
         if(questionNumber==1 && questionNumbers > 1){
             $("#3").remove();
-            if(result.length >=2){result.pop()};
-            $(placeToAppend.next()).replaceWith(questionsFor1[$(this).attr("class").match(/\d+/g)[0]-1])
+            $("#4").remove();
+            while(result.length >=2){result.pop()};
+            placeToAppend.next().not($(".textarea")).replaceWith(questionsFor1[inputIndex])
         }
-        if(questionNumbers==2&&$(this).parent().parent().attr("id")==questionNumbers){
-            $(questionsFor2[$(this).attr("class").match(/\d+/g)[0]-1]).insertAfter(placeToAppend);
-        }else if(questionNumbers==3&&$(this).parent().parent().attr("id")==questionNumbers-1){
-            $(placeToAppend.next()).replaceWith(questionsFor2[$(this).attr("class").match(/\d+/g)[0]-1]);
+        //
+        questionNumbers = $(".question").length;
+        if(questionNumber==2 && questionNumbers > 2){
+            $("#4").remove();
+            while(result.length >=3){result.pop()};
+            $(placeToAppend.next()).not($(".textarea")).replaceWith(questionsFor2[inputIndex])
         }
+        //
+        if(questionNumber==3 && questionNumbers > 3){
+            while(result.length >=4){result.pop()};
+        }
+        //
             //end of display 
         })
     $("#Generate").click(function(){//if the user hits generate 
@@ -85,12 +98,6 @@ $(document).ready(function(){//wait till the page is loaded
             $("#alret").css("display","none");   
         },3000);//make it appear and fade 
     })
-
-    $("input").on("input", function() {
-        let add = [];//make another array that will go into the result array 
-        add.push($(this).val());//add the value of the clicked button to the add array
-        result[$(this).parent().parent().attr('id')-1]=add;//add the add array to the result 
-     });
      $("#main").on("input",".generated", function() {
         let add = [];//make another array that will go into the result array 
         add.push($(this).val());//add the value of the clicked button to the add array
