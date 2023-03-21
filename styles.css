@@ -59,6 +59,15 @@ button{
     border:none;
     transition:all 300ms ease;
 }
+input[type="text"]{
+    text-align:center;
+    width:100px;
+    height:50px;
+    border-radius:10px;
+    background-color:white;
+    border:none;
+    transition:all 300ms ease;
+}
 textarea{
     background-color:white;
 }
@@ -105,7 +114,7 @@ button:active{
         width:70%;
     }
     #forum{
-      width:280px;     
+      width:280px;    
     }
     button{
         width:60px;
