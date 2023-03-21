@@ -67,6 +67,7 @@ input[type="text"]{
     background-color:white;
     border:none;
     transition:all 300ms ease;
+    margin-top:10px;
 }
 textarea{
     background-color:white;
@@ -120,12 +121,13 @@ button:active{
         width:60px;
         height:40px;
     }
+    input[type="text"]{
+        width:60px;
+        height:40px;
+    }
     body{
         display:flex;
         align-items:center;
         justify-content: center;
     }
-  }
-  input[type="text"]{
-      margin-top:10px;
   }
