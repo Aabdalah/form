@@ -59,9 +59,6 @@ button{
     border:none;
     transition:all 300ms ease;
 }
-.hidden{
-    display:none;
-}
 textarea{
     background-color:white;
 }
@@ -101,15 +98,15 @@ button:active{
         opacity:0;
     }
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 360px) {
     textarea{
         margin:0;
         margin-left:45px;
         width:70%;
     }
     #forum{
-      width:280px;
-        margin:0;
+      width:280px; 
+      margin-right:75px;     
     }
     button{
         width:60px;
@@ -120,4 +117,7 @@ button:active{
         align-items:center;
         justify-content: center;
     }
+  }
+  input[type="text"]{
+      margin-top:10px;
   }
