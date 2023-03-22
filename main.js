@@ -1,3 +1,11 @@
+/*
+how to interact with this code 
+1-to change the main question i.e the very first question will change the mainQ variable remove the string "Question one" and add your question;
+for the options change the value of each input for example remove 'option A' and replace it with 'color red'
+2- to change a follow up question first you have to determine which option it will be for starting from questionFor1 it has four entries 
+entry one for option one of the main question and entry two for option 2 of the main question and so in if an option does not have a follow up 
+question like option four of the main question its corresponding entry in the follow up question  is left empty  like line 17 and 22,28,34
+*/ 
 let mainQ ="<div class='question' id='1'><h1>Question one ?</h1><div class='options'><input type='text' class='generated 1' value='Option A'><input type='text' class='generated 2' value='Option B'><input type='text' class='generated 3' value='Option C'><input type='text' class='generated 4' value='Option E'></div></div>";
 let result =[] //array to hold the result shown after generation 
 //the bellow array will hold the options for the second question based on the choice of the first question 
@@ -20,23 +28,17 @@ questionsFor3.push("<div class='question hidden' id='4'><h1>Question four ?</h1>
 questionsFor3.push("");
 questionsFor3.push("<div class='question hidden' id='4'><h1>Question four ?</h1><div class='options'><input type='text' class='generated 1' value='option light'><input type='text' class='generated 2' value='option dark'><input type='text' class='generated 3' value='option not dark'><input type='text' class='generated 4' value='option not light'></div></div>");
 //
-let Questions = [questionsFor1,questionsFor2,questionsFor3];
-$(document).ready(function(){
-    questionNumbers = $(".question").length;
-    $("input").click(function(){
-        questionNumbers = $(".question").length;
-      });
-      $("#main").on('click','.generated',function(){
-        questionNumbers = $(".question").length;
-      });
-})
+let questionsFor4 = [];
+questionsFor4.push("<div class='question hidden' id='5'><h1>Question 5 ?</h1><div class='options'><input type='text' class='generated 1' value='option tall'><input type='text' class='generated 2' value='option small'><input type='text' class='generated 3' value='option medium'><input type='text' class='generated 4' value='option X'></div></div>");
+questionsFor4.push("<div class='question hidden' id='5'><h1>Question 5 ?</h1><div class='options'><input type='text' class='generated 1' value='option once'><input type='text' class='generated 2' value='option twice'><input type='text' class='generated 3' value='option three'></div></div>");
+questionsFor4.push("");
+questionsFor4.push("<div class='question hidden' id='5'><h1>Question 5 ?</h1><div class='options'><input type='text' class='generated 1' value='option light'><input type='text' class='generated 2' value='option dark'><input type='text' class='generated 3' value='option not dark'><input type='text' class='generated 4' value='option not light'></div></div>");
+//
+let Questions = [questionsFor1,questionsFor2,questionsFor3,questionsFor4];
 $(document).ready(function(){//wait till the page is loaded
     $("#main").prepend(mainQ);
     $("#main").on('click','.generated',function(){//git the button that the user clicks will not work if it a special button
         $(this).css("background-color","green");//change the background color of the clicked option
-        let add = [];//make another array that will go into the result array 
-        add.push($(this).val());//add the value of the clicked button to the add array
-        result[$(this).parent().parent().attr('id')-1]=add;//add the add array to the result 
         $(this).siblings().each(function(){//make sure to keep the color of the rest of the buttons to white
             $(this).css("background-color","white")
         });
@@ -45,30 +47,18 @@ $(document).ready(function(){//wait till the page is loaded
         let placeToAppend = $(this).parent().parent();//get the place you will append the new question
         let inputIndex = $(this).attr("class").match(/\d+/g)[0]-1;
         //
-        if(questionNumbers == questionNumber && Questions[questionNumber-1]){
-            $(Questions[questionNumber-1][inputIndex]).insertAfter(placeToAppend);
-        }else if(questionNumbers != questionNumber && !placeToAppend.next().is($(".textarea")) && Questions[questionNumber-1]){
-            $(placeToAppend.next()).replaceWith(Questions[questionNumber-1][inputIndex]);
-        }
-        questionNumbers = $(".question").length;
-        if(questionNumber==1 && questionNumbers > 1){
-            $("#3").remove();
-            $("#4").remove();
-            while(result.length >=2){result.pop()};
-            placeToAppend.next().not($(".textarea")).replaceWith(questionsFor1[inputIndex])
-        }
-        //
-        questionNumbers = $(".question").length;
-        if(questionNumber==2 && questionNumbers > 2){
-            $("#4").remove();
-            while(result.length >=3){result.pop()};
-            $(placeToAppend.next()).not($(".textarea")).replaceWith(questionsFor2[inputIndex])
-        }
-        //
-        if(questionNumber==3 && questionNumbers > 3){
-            while(result.length >=4){result.pop()};
-        }
-        //
+        $(".question").each(function(){//make sure that if the user hits the same question more than once nothing happen and if he changes on of his answer remove the questions below changed answer 
+            if($(this).attr("id")>questionNumber){
+                $(this).remove();
+                result.pop();
+            }
+        })
+        if(Questions[questionNumber-1]){//if the current option chosen by the user has a follow up question
+            $(Questions[questionNumber-1][inputIndex]).insertAfter(placeToAppend);//inset the follow up question after the current question
+        }    
+        let add = [];//make another array that will go into the result array 
+        add.push($(this).val());//add the value of the clicked button to the add array
+        result[$(this).parent().parent().attr('id')-1]=add;//add the add array to the result
             //end of display 
         })
     $("#Generate").click(function(){//if the user hits generate 
